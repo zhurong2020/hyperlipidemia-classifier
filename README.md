@@ -1,44 +1,68 @@
-# Hyperlipidemia Classifier
+# 血脂管理评估系统
 
-This project is a tool for classifying hyperlipidemia levels based on the guidelines for assessing Atherosclerotic Cardiovascular Disease (ASCVD) risk. It provides a systematic approach to evaluate patients' lipid profiles and associated risk factors.
+## 功能简介
+这是一个基于《中国血脂管理指南2023》的血脂管理评估系统，可以根据患者的具体情况进行ASCVD风险分层和治疗目标的制定。系统特别整合了糖尿病患者的血脂管理标准。
 
-## Project Structure
+## 主要功能
+1. ASCVD风险分层评估
+2. 血脂治疗目标制定
+3. 糖尿病患者的特殊评估标准
+4. 余生危险因素评估（适用于特定人群）
 
-```
-hyperlipidemia-classifier
-├── src
-│   ├── main.py          # Entry point for the application
-│   ├── classifier.py    # Contains classification logic for hyperlipidemia
-│   └── utils
-│       └── __init__.py  # Utility functions for data handling
-├── requirements.txt     # Project dependencies
-└── README.md            # Project documentation
-```
+## 评估流程
 
-## Installation
+### 一级预防（无ASCVD）
+1. 基本信息录入：
+   - 血脂指标（TC、LDL-C、HDL-C）
+   - 年龄和性别
+   - 危险因素（糖尿病、CKD、吸烟等）
 
-To set up the project, clone the repository and install the required dependencies:
+2. 风险分层标准：
+   - 高危：LDL-C ≥ 4.9 mmol/L 或 TC ≥ 7.2 mmol/L；糖尿病且年龄 ≥ 40岁；CKD 3-4期
+   - 中危：根据危险因素数量和血脂水平评估
+   - 低危：其他情况
 
-```bash
-git clone <repository-url>
-cd hyperlipidemia-classifier
-pip install -r requirements.txt
-```
+3. 余生危险评估（适用于中危且年龄<55岁者）
 
-## Usage
+### 二级预防（有ASCVD）
+1. 评估严重ASCVD事件
+2. 评估高危风险因素
+3. 确定风险等级（超高危/极高危）
 
-To run the application, execute the following command:
+## 治疗目标
 
-```bash
-python src/main.py
-```
+### 非糖尿病患者
+- 超高危：LDL-C<1.4 mmol/L，且较基线降低幅度>50%
+- 极高危：LDL-C<1.8 mmol/L，且较基线降低幅度>50%
+- 高危：LDL-C<2.6 mmol/L
+- 中危：LDL-C<2.6 mmol/L
+- 低危：LDL-C<3.4 mmol/L
 
-Follow the prompts to input the necessary patient data, including lipid levels and risk factors. The tool will classify the hyperlipidemia level based on the ASCVD risk guidelines.
+### 糖尿病患者
+1. 合并ASCVD：
+   - LDL-C<1.4 mmol/L
+   - 非HDL-C<2.2 mmol/L
 
-## Contributing
+2. ASCVD高危：
+   - LDL-C<1.8 mmol/L
+   - 非HDL-C<2.6 mmol/L
 
-Contributions are welcome! Please feel free to submit a pull request or open an issue for any suggestions or improvements.
+3. ASCVD中低危：
+   - LDL-C<2.6 mmol/L
+   - 非HDL-C<3.4 mmol/L
 
-## License
+## 使用说明
+1. 运行程序后，首先选择患者是否存在ASCVD
+2. 根据提示输入相关信息
+3. 点击评估按钮获取风险分层和治疗目标
+4. 如果符合余生危险评估条件，会出现额外的评估选项
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+## 注意事项
+- 所有数值输入必须使用阿拉伯数字
+- 血脂指标单位为mmol/L
+- 年龄必须为整数
+- 确保所有必要信息都已填写后再进行评估
+
+## 技术要求
+- Python 3.x
+- tkinter库（Python标准库）
