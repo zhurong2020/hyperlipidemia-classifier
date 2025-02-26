@@ -5,4 +5,5 @@ setuptools
 # for ocr
 pytesseract
 pillow
+# for flask
 Flask
