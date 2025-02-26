@@ -40,4 +40,7 @@ htmlcov/
 .ipynb_checkpoints
 
 # Local development settings
-local_settings.py 
+local_settings.py
+
+# Docs archive
+docs/archive/ 
