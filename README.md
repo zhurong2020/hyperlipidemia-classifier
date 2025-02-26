@@ -20,17 +20,19 @@ hyperlipidemia-classifier/
 │   ├── archive/         # Archived files
 │   │   └── main.py      # Old version code
 │   └── logic/           # Logic documentation
+│       ├── __init__.py  # Package initialization file
 │       └── 一级预防逻辑.txt
 └── src/                 # Source code directory
     ├── __init__.py      # Package initialization file
     ├── lipid_risk_assessor.py  # Main program
     ├── classifier.py    # Classifier module
     ├── config/          # Configuration files directory
-    │   └── __init__.py
+    │   └── __init__.py  # Package initialization file
     ├── utils/           # Utility functions directory
+    │   ├── __init__.py  # Package initialization file with utility functions
     │   └── ocr_to_markdown.py  # OCR script
     └── tests/           # Tests directory
-        ├── __init__.py
+        ├── __init__.py  # Package initialization file
         └── test_classifier.py
 ```
 

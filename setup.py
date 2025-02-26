@@ -8,7 +8,7 @@ setup(
         'tkinter',  # 通常内置于Python
     ],
     author="zhurong2020",
-    author_email="your.email@example.com",
+    author_email="zhurong0525@icloud.com",
     description="A lipid risk assessment tool based on Chinese guidelines",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
