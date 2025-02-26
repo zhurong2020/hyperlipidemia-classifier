@@ -1,68 +1,143 @@
-# 血脂管理评估系统
+# Hyperlipidemia Management Assessment System
 
-## 功能简介
-这是一个基于《中国血脂管理指南2023》的血脂管理评估系统，可以根据患者的具体情况进行ASCVD风险分层和治疗目标的制定。系统特别整合了糖尿病患者的血脂管理标准。
+## Project Overview
+This is a hyperlipidemia management assessment system based on the "Chinese Lipid Management Guidelines 2023", developed using Python and Tkinter for the graphical user interface. The system can stratify ASCVD risk and set treatment goals based on the specific conditions of patients, with special integration of lipid management standards for diabetic patients.
 
-## 主要功能
-1. ASCVD风险分层评估
-2. 血脂治疗目标制定
-3. 糖尿病患者的特殊评估标准
-4. 余生危险因素评估（适用于特定人群）
+## Project Structure
+```
+hyperlipidemia-classifier/
+├── .gitignore           # Git ignore file
+├── LICENSE              # MIT License file
+├── README.md            # Project documentation
+├── requirements.txt     # Project dependencies
+├── setup.py             # Package installation configuration
+├── docs/                # Documentation directory
+│   ├── images/          # Image resources
+│   │   ├── flow_chart_1.jpg
+│   │   ├── flow_chart_2.jpg
+│   │   ├── risk_assessment.jpg
+│   │   └── ui_screenshot.jpg
+│   ├── archive/         # Archived files
+│   │   └── main.py      # Old version code
+│   └── logic/           # Logic documentation
+│       └── 一级预防逻辑.txt
+└── src/                 # Source code directory
+    ├── __init__.py      # Package initialization file
+    ├── lipid_risk_assessor.py  # Main program
+    ├── classifier.py    # Classifier module
+    ├── config/          # Configuration files directory
+    │   └── __init__.py
+    ├── utils/           # Utility functions directory
+    │   └── __init__.py
+    └── tests/           # Tests directory
+        ├── __init__.py
+        └── test_classifier.py
+```
 
-## 评估流程
+## Technical Framework
+- Programming Language: Python 3.x
+- GUI Framework: Tkinter
+- Dependency Management: pip
 
-### 一级预防（无ASCVD）
-1. 基本信息录入：
-   - 血脂指标（TC、LDL-C、HDL-C）
-   - 年龄和性别
-   - 危险因素（糖尿病、CKD、吸烟等）
+## Main Features
+1. ASCVD risk stratification assessment
+2. Lipid treatment goal setting
+3. Special assessment standards for diabetic patients
+4. Lifetime risk factor assessment (for specific populations)
 
-2. 风险分层标准：
-   - 高危：LDL-C ≥ 4.9 mmol/L 或 TC ≥ 7.2 mmol/L；糖尿病且年龄 ≥ 40岁；CKD 3-4期
-   - 中危：根据危险因素数量和血脂水平评估
-   - 低危：其他情况
+## Module Descriptions
+1. `lipid_risk_assessor.py`
+   - Main Functionality: Full version of the lipid management system, including diabetes management module
+   - Implementation: GUI interface, risk assessment, treatment goal setting
 
-3. 余生危险评估（适用于中危且年龄<55岁者）
+2. `classifier.py`
+   - Main Functionality: Lipid classification algorithm
+   - Implementation: Logic for classifying lipid levels
 
-### 二级预防（有ASCVD）
-1. 评估严重ASCVD事件
-2. 评估高危风险因素
-3. 确定风险等级（超高危/极高危）
+## Assessment Process
 
-## 治疗目标
+### Primary Prevention (No ASCVD)
+1. Basic Information Entry:
+   - Lipid indicators (TC, LDL-C, HDL-C, TG)
+   - Age and gender
+   - Risk factors (diabetes, CKD, smoking, etc.)
 
-### 非糖尿病患者
-- 超高危：LDL-C<1.4 mmol/L，且较基线降低幅度>50%
-- 极高危：LDL-C<1.8 mmol/L，且较基线降低幅度>50%
-- 高危：LDL-C<2.6 mmol/L
-- 中危：LDL-C<2.6 mmol/L
-- 低危：LDL-C<3.4 mmol/L
+2. Risk Stratification Standards:
+   - High Risk: LDL-C ≥ 4.9 mmol/L or TC ≥ 7.2 mmol/L; diabetes and age ≥ 40 years; CKD 3-4 stage
+   - Moderate Risk: Evaluated based on the number of risk factors and lipid levels
+   - Low Risk: Other situations
 
-### 糖尿病患者
-1. 合并ASCVD：
+3. Lifetime Risk Assessment (for moderate risk and age <55)
+
+### Secondary Prevention (With ASCVD)
+1. Assessment of severe ASCVD events
+2. Assessment of high-risk factors
+3. Determine risk level (very high risk/extremely high risk)
+
+## Treatment Goals
+
+### Non-Diabetic Patients
+- Extremely High Risk: LDL-C<1.4 mmol/L, and >50% reduction from baseline
+- Very High Risk: LDL-C<1.8 mmol/L, and >50% reduction from baseline
+- High Risk: LDL-C<2.6 mmol/L
+- Moderate Risk: LDL-C<2.6 mmol/L
+- Low Risk: LDL-C<3.4 mmol/L
+
+### Diabetic Patients
+1. With ASCVD:
    - LDL-C<1.4 mmol/L
-   - 非HDL-C<2.2 mmol/L
+   - Non-HDL-C<2.2 mmol/L
 
-2. ASCVD高危：
+2. High ASCVD Risk:
    - LDL-C<1.8 mmol/L
-   - 非HDL-C<2.6 mmol/L
+   - Non-HDL-C<2.6 mmol/L
 
-3. ASCVD中低危：
+3. Moderate to Low ASCVD Risk:
    - LDL-C<2.6 mmol/L
-   - 非HDL-C<3.4 mmol/L
+   - Non-HDL-C<3.4 mmol/L
 
-## 使用说明
-1. 运行程序后，首先选择患者是否存在ASCVD
-2. 根据提示输入相关信息
-3. 点击评估按钮获取风险分层和治疗目标
-4. 如果符合余生危险评估条件，会出现额外的评估选项
+## Usage Instructions
+1. Run the program and first select whether the patient has ASCVD
+2. Enter the relevant information as prompted
+3. Click the assessment button to get risk stratification and treatment goals
+4. If eligible for lifetime risk assessment, additional assessment options will appear
 
-## 注意事项
-- 所有数值输入必须使用阿拉伯数字
-- 血脂指标单位为mmol/L
-- 年龄必须为整数
-- 确保所有必要信息都已填写后再进行评估
+## Notes
+- All numerical inputs must use Arabic numerals
+- Lipid indicators are in mmol/L
+- Age must be an integer
+- Ensure all necessary information is filled in before assessment
 
-## 技术要求
-- Python 3.x
-- tkinter库（Python标准库）
+## Installation Instructions
+1. Clone the project locally
+   ```bash
+   git clone https://github.com/zhurong2020/hyperlipidemia-classifier
+   ```
+
+2. Install dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the program
+   ```bash
+   python src/lipid_risk_assessor.py
+   ```
+
+## Development Team
+- Project Lead: [chenqizhi]
+- Developer: [zhurong2020]
+- Medical Consultant: [chenqizhi]
+
+## Version History
+- v1.0.0 (2024-01)
+  * Initial release
+  * Basic lipid assessment functionality
+  * Added diabetes management module
+  * Optimized user interface
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Copyright Information
+© 2024 [znhskzj]. All Rights Reserved.
