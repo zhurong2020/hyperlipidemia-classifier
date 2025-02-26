@@ -20,5 +20,5 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
-          cd ~/hyperlipidemia_web
+          cd ~
           ./deploy_hyperlipidemia.sh
