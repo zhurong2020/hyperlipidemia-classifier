@@ -2,3 +2,6 @@ numpy
 pandas
 scikit-learn
 setuptools
+# for ocr
+pytesseract
+pillow

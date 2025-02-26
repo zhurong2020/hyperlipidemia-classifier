@@ -28,7 +28,7 @@ hyperlipidemia-classifier/
     ├── config/          # Configuration files directory
     │   └── __init__.py
     ├── utils/           # Utility functions directory
-    │   └── __init__.py
+    │   └── ocr_to_markdown.py  # OCR script
     └── tests/           # Tests directory
         ├── __init__.py
         └── test_classifier.py
@@ -45,14 +45,29 @@ hyperlipidemia-classifier/
 3. Special assessment standards for diabetic patients
 4. Lifetime risk factor assessment (for specific populations)
 
-## Module Descriptions
-1. `lipid_risk_assessor.py`
-   - Main Functionality: Full version of the lipid management system, including diabetes management module
-   - Implementation: GUI interface, risk assessment, treatment goal setting
+## Tesseract Installation on Windows
 
-2. `classifier.py`
-   - Main Functionality: Lipid classification algorithm
-   - Implementation: Logic for classifying lipid levels
+To use the OCR functionality, you need to install Tesseract on your Windows system:
+
+1. **Download and Install Tesseract**:
+   - Download the Tesseract installer from [Tesseract at UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki).
+   - Run the installer and follow the instructions to complete the installation.
+
+2. **Add Tesseract to PATH**:
+   - Find the installation path of Tesseract (e.g., `C:\Program Files\Tesseract-OCR`).
+   - Open the Start Menu and search for "Environment Variables".
+   - Click "Edit the system environment variables".
+   - In the System Properties window, click "Environment Variables".
+   - Under "System variables", find and select the "Path" variable, then click "Edit".
+   - Click "New" and add the path to the Tesseract installation directory.
+   - Click "OK" to close all dialog boxes.
+
+3. **Verify Installation**:
+   - Open a command prompt and type:
+     ```bash
+     tesseract --version
+     ```
+   - You should see the version information for Tesseract.
 
 ## Assessment Process
 
