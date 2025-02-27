@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, make_response
 import hashlib
+from src.lipid_risk_assessor import LipidRiskAssessor
 
 @app.route('/')
 def index():
@@ -8,9 +9,40 @@ def index():
 
 @app.route('/assess', methods=['POST'])
 def assess():
-    # 获取表单数据并进行评估
-    # 返回评估结果
-    return "Assessment Result" 
+    data = request.form
+    
+    # 获取表单数据
+    age = int(data.get('age'))
+    gender = data.get('gender')
+    tc = float(data.get('tc'))
+    ldl = float(data.get('ldl'))
+    diabetes = bool(data.get('diabetes'))
+    hypertension = bool(data.get('hypertension'))
+    smoking = bool(data.get('smoking'))
+
+    # 创建评估器实例
+    assessor = LipidRiskAssessor()
+    
+    # 进行风险评估
+    risk_level = assessor.assess_risk(
+        age=age,
+        gender=gender,
+        tc=tc,
+        ldl=ldl,
+        diabetes=diabetes,
+        hypertension=hypertension,
+        smoking=smoking
+    )
+    
+    # 获取建议
+    recommendations = assessor.get_recommendations(risk_level)
+
+    result = {
+        'risk_level': risk_level,
+        'recommendations': recommendations
+    }
+
+    return render_template('index.html', result=result)
 
 @app.route('/wechat', methods=['GET', 'POST'])
 def wechat():
