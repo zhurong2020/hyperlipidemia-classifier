@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, request, make_response
 import hashlib
-from src.web_assessor import WebLipidAssessor
+from src.web.assessor import WebAssessor
 
 @app.route('/')
 def index():
@@ -9,40 +9,19 @@ def index():
 
 @app.route('/assess', methods=['POST'])
 def assess():
-    data = request.form
-    
-    # 获取表单数据
-    age = int(data.get('age'))
-    gender = data.get('gender')
-    tc = float(data.get('tc'))
-    ldl = float(data.get('ldl'))
-    diabetes = bool(data.get('diabetes'))
-    hypertension = bool(data.get('hypertension'))
-    smoking = bool(data.get('smoking'))
-
-    # 使用 Web 适配器
-    assessor = WebLipidAssessor()
-    
-    # 进行风险评估
-    risk_level = assessor.assess_risk(
-        age=age,
-        gender=gender,
-        tc=tc,
-        ldl=ldl,
-        diabetes=diabetes,
-        hypertension=hypertension,
-        smoking=smoking
-    )
-    
-    # 获取建议
-    recommendations = assessor.get_recommendations(risk_level)
-
-    result = {
-        'risk_level': risk_level,
-        'recommendations': recommendations
-    }
-
-    return render_template('index.html', result=result)
+    try:
+        data = request.form
+        assessor = WebAssessor()
+        risk_level = assessor.assess_risk(data)
+        recommendations = assessor.get_recommendations(risk_level[0])
+        
+        return render_template('index.html', result={
+            'risk_level': risk_level[0],
+            'target': risk_level[1],
+            'recommendations': recommendations
+        })
+    except Exception as e:
+        return str(e), 400
 
 @app.route('/wechat', methods=['GET', 'POST'])
 def wechat():

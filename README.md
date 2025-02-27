@@ -1,9 +1,6 @@
-# Hyperlipidemia Management Assessment System
+# 血脂风险评估系统
 
-## Project Overview
-This is a hyperlipidemia management assessment system based on the "Chinese Lipid Management Guidelines 2023", developed using Python and Tkinter for the graphical user interface. The system can stratify ASCVD risk and set treatment goals based on the specific conditions of patients, with special integration of lipid management standards for diabetic patients.
-
-## Project Structure
+## 项目结构
 ```
 hyperlipidemia-classifier/
 ├── .gitignore           # Git ignore file
@@ -158,3 +155,47 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Copyright Information
 © 2024 [znhskzj]. All Rights Reserved.
+
+## 新项目结构
+```
+hyperlipidemia-classifier/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml   # CI/CD配置
+├── app/                 # Web应用模块
+│   ├── __init__.py
+│   ├── routes.py        # 路由配置
+│   └── templates/
+│       └── index.html   # 网页模板
+├── docs/                # Documentation directory
+│   ├── images/          # Image resources
+│   ├── archive/         # Archived files
+│   │   └── main.py      # Old version code
+│   ├── logic/           # Logic documentation
+│   └── ocr_output
+├── requirements/        # 依赖管理
+│   ├── base.txt         # 基础依赖
+│   ├── web.txt          # Web服务依赖
+│   └── desktop.txt      # 桌面应用依赖
+├── scripts/             # 部署脚本
+│   └── deploy_hyperlipidemia.sh
+├── src/
+│   ├── config/            
+│   ├── core/            # 核心计算逻辑
+│   │   ├── __init__.py
+│   │   ├── lipid_risk_assessor.py
+│   │   └── risk_calculator.py
+│   ├── desktop/         # 桌面应用
+│   │   └── gui_app.py
+│   ├── tests/           # 测试目录
+│   ├── utils/             
+│   ├── web/             # Web服务适配器
+│   │   ├── assessor.py
+│   │   └── wechat_handler.py
+├── .gitignore
+├── LICENSE
+├── README.md
+├── setup.py
+└── VERSION
+
+```

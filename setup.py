@@ -1,11 +1,17 @@
 from setuptools import setup, find_packages
+import os
+
+# 从VERSION文件读取版本号
+with open('VERSION') as f:
+    version = f.read().strip()
 
 setup(
     name="lipid-risk-assessor",
-    version="0.1.5",
+    version=version,
     packages=find_packages(),
     install_requires=[
-        'tkinter',  # 通常内置于Python
+        'flask>=2.0.1',
+        'gunicorn>=20.1.0',
     ],
     author="zhurong2020",
     author_email="zhurong0525@icloud.com",

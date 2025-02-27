@@ -44,4 +44,21 @@ htmlcov/
 local_settings.py
 
 # Docs archive
-docs/archive/ 
+docs/archive/
+
+# 新增需要忽略的内容
+# 服务器环境配置
+/server/
+/deploy/
+
+# 新增IDE配置
+.vscode/settings.json
+
+# 新增忽略编译文件
+*.pyc
+*.pyo
+*.pyd
+
+# 新增忽略测试数据
+/test_data/
+/tmp/ 
