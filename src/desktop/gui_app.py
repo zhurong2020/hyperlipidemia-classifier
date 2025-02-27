@@ -1,7 +1,13 @@
 # 医生本地使用的GUI封装
+import sys
+import os
+
+# 添加项目根目录到Python路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
 import tkinter as tk
 from tkinter import ttk, messagebox
-from core.risk_calculator import RiskCalculator
+from src.core.risk_calculator import RiskCalculator
 
 class DoctorGUI:
     """医生使用的桌面应用程序"""

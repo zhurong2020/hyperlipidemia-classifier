@@ -8,7 +8,8 @@ with open('VERSION') as f:
 setup(
     name="lipid-risk-assessor",
     version=version,
-    packages=find_packages(),
+    package_dir={'': 'src'},
+    packages=find_packages(where='src'),
     install_requires=[
         'flask>=2.0.1',
         'gunicorn>=20.1.0',
