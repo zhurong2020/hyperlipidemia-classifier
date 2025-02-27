@@ -11,4 +11,4 @@
 
    # 重启 Flask 应用
    pkill -f gunicorn
-   nohup gunicorn -w 4 -b 0.0.0.0:5000 app:app > /dev/null 2>&1 &
+   gunicorn -w 4 -b 0.0.0.0:5000 app:app --log-level debug > gunicorn.log 2>&1 &
