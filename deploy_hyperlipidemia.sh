@@ -3,6 +3,9 @@
    # Enter project directory
    cd ~/hyperlipidemia_web
 
+   # 设置脚本为可执行
+   chmod +x deploy_hyperlipidemia.sh
+
    # Recreate virtual environment if needed
    if [ ! -d "venv" ]; then
        python3 -m venv venv
@@ -20,4 +23,4 @@
    # Restart Flask application
    pkill -f gunicorn
    nohup gunicorn -w 4 -b 0.0.0.0:5000 app:app &
-   
+
