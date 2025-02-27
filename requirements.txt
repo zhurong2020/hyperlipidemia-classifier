@@ -7,3 +7,5 @@ pytesseract
 pillow
 # for flask
 Flask
+# for gunicorn
+gunicorn
