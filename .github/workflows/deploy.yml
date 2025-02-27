@@ -20,8 +20,9 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
-          cd ~/hyperlipidemia_web
-          git reset --hard  # Discard local changes
-          git pull origin main
-          chmod +x deploy_hyperlipidemia.sh  # Ensure the script is executable
-          ./deploy_hyperlipidemia.sh
+            cd ~/hyperlipidemia_web
+            git reset --hard  # Discard local changes
+            git pull origin main
+            chmod +x deploy_hyperlipidemia.sh
+            ./deploy_hyperlipidemia.sh
+            exit 0  # 确保脚本正常退出
