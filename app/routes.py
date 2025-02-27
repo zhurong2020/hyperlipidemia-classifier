@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, request, make_response
 import hashlib
-from src.lipid_risk_assessor import LipidRiskAssessor
+from src.web_assessor import WebLipidAssessor
 
 @app.route('/')
 def index():
@@ -20,8 +20,8 @@ def assess():
     hypertension = bool(data.get('hypertension'))
     smoking = bool(data.get('smoking'))
 
-    # 创建评估器实例
-    assessor = LipidRiskAssessor()
+    # 使用 Web 适配器
+    assessor = WebLipidAssessor()
     
     # 进行风险评估
     risk_level = assessor.assess_risk(
