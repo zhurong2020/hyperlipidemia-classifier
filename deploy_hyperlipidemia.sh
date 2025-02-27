@@ -3,9 +3,6 @@
    # Enter project directory
    cd ~/hyperlipidemia_web
 
-   # 设置脚本为可执行
-   chmod +x deploy_hyperlipidemia.sh
-
    # Recreate virtual environment if needed
    if [ ! -d "venv" ]; then
        python3 -m venv venv
@@ -13,7 +10,6 @@
 
    # Activate virtual environment
    source venv/bin/activate
-
 
    git stash
 
