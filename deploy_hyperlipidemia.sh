@@ -14,6 +14,9 @@
    # Activate virtual environment
    source venv/bin/activate
 
+
+   git stash
+
    # Pull latest code
    git pull origin main
 
