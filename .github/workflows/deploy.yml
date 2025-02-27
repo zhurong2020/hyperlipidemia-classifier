@@ -13,9 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set execute permissions
-      run: chmod +x deploy_hyperlipidemia.sh  
-
     - name: Deploy to VPS
       uses: appleboy/ssh-action@v0.1.3
       with:
@@ -26,4 +23,5 @@ jobs:
           cd ~/hyperlipidemia_web
           git reset --hard  # Discard local changes
           git pull origin main
+          chmod +x deploy_hyperlipidemia.sh  # Ensure the script is executable
           ./deploy_hyperlipidemia.sh
