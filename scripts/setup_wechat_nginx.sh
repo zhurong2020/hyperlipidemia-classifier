@@ -25,6 +25,7 @@ NGINX_CONF_DIR="/etc/nginx/conf.d"
 NGINX_SITE_CONF="$NGINX_CONF_DIR/wechat_hyperlipidemia.conf"
 APP_DIR="$HOME/hyperlipidemia_web"
 DOMAIN_NAME="med.zhurong.link"
+CERT_DOMAIN="zhurong.link"  # 使用已存在的证书域名
 SERVER_IP="74.48.63.73"
 
 # 创建Nginx配置
@@ -45,8 +46,8 @@ server {
     listen 443 ssl;
     server_name $DOMAIN_NAME;
 
-    ssl_certificate /etc/letsencrypt/live/$DOMAIN_NAME/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN_NAME/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/$CERT_DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$CERT_DOMAIN/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
     ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
