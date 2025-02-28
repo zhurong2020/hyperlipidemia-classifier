@@ -22,7 +22,10 @@ hyperlipidemia-classifier/
 │   ├── web.txt          # Web服务依赖
 │   └── desktop.txt      # 桌面应用依赖
 ├── scripts/             # 部署脚本
-│   └── deploy_hyperlipidemia.sh
+│   ├── deploy_hyperlipidemia.sh    # 主部署脚本
+│   ├── deploy_with_systemd.sh      # 使用systemd部署的脚本
+│   ├── test_flask_app.sh           # Flask应用测试脚本
+│   └── hyperlipidemia.service      # systemd服务配置文件
 ├── src/
 │   ├── config/            
 │   ├── core/            # 核心计算逻辑
@@ -44,6 +47,7 @@ hyperlipidemia-classifier/
 ├── LICENSE
 ├── README.md
 ├── setup.py
+├── wsgi.py                   # WSGI应用入口点
 └── VERSION
 ```
 
@@ -159,6 +163,21 @@ To use the OCR functionality, you need to install Tesseract on your Windows syst
 
 ## Version History
 
+### v0.2.2 (2024-03) - 部署优化与依赖修复
+**核心改进**：
+- 部署脚本优化
+  - 将所有脚本中的 `~` 替换为 `$HOME` 以避免路径解析问题
+  - 增强部署脚本的错误处理和日志记录
+  - 添加 `test_flask_app.sh` 用于诊断Flask应用问题
+- 依赖管理改进
+  - 固定Flask版本为2.0.1和Werkzeug版本为2.0.1以解决兼容性问题
+  - 添加 `--force-reinstall` 选项确保依赖正确安装
+  - 在测试脚本中添加版本检查功能
+- 错误修复
+  - 解决了由于Werkzeug版本不兼容导致的 `url_quote` 导入错误
+  - 修复了部署过程中可能创建错误 `~` 目录的问题
+  - 改进了systemd服务配置
+
 ### v0.2.1 (2024-03) - 业务逻辑优化
 **核心改进**：
 - 业务逻辑文档化
@@ -232,6 +251,59 @@ python run_desktop.py
 3. `docs/logic/一级预防逻辑.txt` - 一级预防详细逻辑说明
 
 这些文档可以帮助开发者和医疗专业人员理解系统的决策过程，确保实现的准确性。
+
+## Web部署指南
+
+从v0.2.0开始，系统支持Web部署，可以作为网页应用提供服务。
+
+### 部署到VPS服务器
+
+1. **准备工作**
+   - 确保服务器已安装Python 3.8+
+   - 克隆代码库到服务器
+   ```bash
+   git clone https://github.com/zhurong2020/hyperlipidemia-classifier.git hyperlipidemia_web
+   cd hyperlipidemia_web
+   ```
+
+2. **使用部署脚本**
+   
+   我们提供了两种部署方式：
+   
+   a. 使用Gunicorn直接部署：
+   ```bash
+   bash scripts/deploy_hyperlipidemia.sh
+   ```
+   
+   b. 使用Systemd服务部署（推荐用于生产环境）：
+   ```bash
+   bash scripts/deploy_with_systemd.sh
+   ```
+
+3. **测试部署**
+   
+   如果遇到部署问题，可以使用测试脚本诊断：
+   ```bash
+   bash scripts/test_flask_app.sh
+   ```
+   
+   此脚本会检查环境配置、依赖版本和应用响应情况。
+
+4. **访问Web应用**
+   
+   部署成功后，可以通过以下地址访问应用：
+   ```
+   http://服务器IP:5000
+   ```
+
+### 依赖版本说明
+
+Web部署使用以下关键依赖：
+- Flask 2.0.1
+- Werkzeug 2.0.1
+- Gunicorn 20.1.0
+
+这些版本经过兼容性测试，确保能够正常工作。如需更新版本，请先在测试环境验证。
 
 ## 版本迁移指南
 
