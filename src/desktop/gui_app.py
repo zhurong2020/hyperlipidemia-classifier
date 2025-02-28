@@ -101,13 +101,16 @@ class DoctorGUI:
         self._create_input_field("甘油三酯 (TG, mmol/L):", 6)
         self._create_input_field("年龄:", 7)
         
-        # 性别选择
-        self.gender_var = tk.StringVar(value="male")
+        # 性别选择 - 调整布局
         tk.Label(self.root, text="性别:").grid(row=8, column=0, sticky="w")
-        tk.Radiobutton(self.root, text="男性", variable=self.gender_var, 
-                      value="male").grid(row=8, column=1, sticky="w")
-        tk.Radiobutton(self.root, text="女性", variable=self.gender_var,
-                      value="female").grid(row=8, column=2, sticky="w")
+        gender_frame = tk.Frame(self.root)
+        gender_frame.grid(row=8, column=1, sticky="w")
+        
+        self.gender_var = tk.StringVar(value="male")
+        tk.Radiobutton(gender_frame, text="男性", variable=self.gender_var, 
+                      value="male").pack(side=tk.LEFT)
+        tk.Radiobutton(gender_frame, text="女性", variable=self.gender_var,
+                      value="female").pack(side=tk.LEFT)
         
         # 高危筛查复选框
         tk.Label(self.root, text="高危筛查:", font=("Arial", 12)).grid(row=9, column=0, columnspan=2, sticky="w")
@@ -201,6 +204,7 @@ class DoctorGUI:
     def _get_severe_events_count(self):
         """获取严重ASCVD事件总数"""
         return sum([
+            self.var_acs.get(),
             self.var_mi.get(),
             self.var_stroke.get(),
             self.var_pad.get()
@@ -224,14 +228,14 @@ class DoctorGUI:
         for widget in self.root.winfo_children():
             # 保留ASCVD选择相关控件
             if widget == self.ascvd_label or \
-               isinstance(widget, tk.Radiobutton) and widget.cget("variable") == self.var_ascvd:
+               isinstance(widget, tk.Radiobutton) and widget.cget("variable") == str(self.var_ascvd):
                 continue
-            # 隐藏其他所有控件
-            if isinstance(widget, (tk.Label, tk.Entry, tk.Checkbutton, tk.Button, tk.Frame)):
-                widget.grid_forget()
+            # 销毁其他所有控件
+            if isinstance(widget, (tk.Label, tk.Entry, tk.Checkbutton, tk.Button, tk.Frame)) and widget != self.result_label:
+                widget.destroy()
 
     def _update_severe_count(self):
-        count = (self.var_mi.get() + self.var_stroke.get() + 
+        count = (self.var_acs.get() + self.var_mi.get() + self.var_stroke.get() + 
                 self.var_pad.get())
         self.label_severe_events.config(text=f"严重ASCVD事件计数: {count}")
 
@@ -253,22 +257,107 @@ class DoctorGUI:
                 result = self.calculator.classify_hyperlipidemia(
                     ldl_c=0, tc=0, hdl_c=0, tg=0,  # 实际参数需要从界面获取
                     ascvd=True, 
-                    severe_ascvd_events=severe_events,
+                    severe_events=severe_events,
                     high_risk_factors=high_risk
                 )
-                messagebox.showinfo("结果", result[0])
+                
+                # 格式化结果显示，与原代码一致
+                risk_level, target, rec_class, evidence = result
+                
+                if has_diabetes:
+                    dm_target = "LDL-C<1.4 mmol/L\n非HDL-C<2.2 mmol/L"
+                    result_message = (
+                        f"ASCVD风险等级：{risk_level}\n"
+                        f"治疗目标：{target}\n"
+                        f"推荐类别：{rec_class}  证据等级：{evidence}\n\n"
+                        f"糖尿病合并ASCVD患者分级：\n"
+                        f"治疗目标：{dm_target}\n"
+                        f"推荐类别：I  证据等级：A"
+                    )
+                else:
+                    result_message = (
+                        f"ASCVD风险等级：{risk_level}\n\n"
+                        f"治疗目标：\n\n"
+                        f"{target}\n\n"
+                        f"推荐类别：{rec_class}  证据等级：{evidence}"
+                    )
+                
+                messagebox.showinfo("风险评估结果及治疗目标", result_message)
         except Exception as e:
             messagebox.showerror("错误", str(e))
 
     def _on_evaluate_primary(self):
         """处理一级预防评估逻辑"""
         try:
-            # 获取基本信息
-            tc = float(self.entry_tc.get())
-            ldl_c = float(self.entry_ldl_c.get())
-            hdl_c = float(self.entry_hdl_c.get())
-            tg = float(self.entry_tg.get())
-            age = int(self.entry_age.get())
+            # 验证所有必填字段
+            missing_fields = []
+            invalid_fields = []
+            
+            # 检查TC字段
+            tc_value = self.entry_tc.get()
+            if tc_value in ["", "正常范围: 3.1-5.2"] or self.entry_tc.cget("fg") == "gray":
+                missing_fields.append("总胆固醇 (TC)")
+            else:
+                try:
+                    tc = float(tc_value)
+                except ValueError:
+                    invalid_fields.append("总胆固醇 (TC)")
+            
+            # 检查LDL-C字段
+            ldl_c_value = self.entry_ldl_c.get()
+            if ldl_c_value in ["", "正常范围: 1.8-3.4"] or self.entry_ldl_c.cget("fg") == "gray":
+                missing_fields.append("低密度脂蛋白胆固醇 (LDL-C)")
+            else:
+                try:
+                    ldl_c = float(ldl_c_value)
+                except ValueError:
+                    invalid_fields.append("低密度脂蛋白胆固醇 (LDL-C)")
+            
+            # 检查HDL-C字段
+            hdl_c_value = self.entry_hdl_c.get()
+            if hdl_c_value in ["", "正常范围: >1.0"] or self.entry_hdl_c.cget("fg") == "gray":
+                missing_fields.append("高密度脂蛋白胆固醇 (HDL-C)")
+            else:
+                try:
+                    hdl_c = float(hdl_c_value)
+                except ValueError:
+                    invalid_fields.append("高密度脂蛋白胆固醇 (HDL-C)")
+            
+            # 检查TG字段
+            tg_value = self.entry_tg.get()
+            if tg_value in ["", "正常范围: <1.7"] or self.entry_tg.cget("fg") == "gray":
+                missing_fields.append("甘油三酯 (TG)")
+            else:
+                try:
+                    tg = float(tg_value)
+                except ValueError:
+                    invalid_fields.append("甘油三酯 (TG)")
+            
+            # 检查年龄字段
+            age_value = self.entry_age.get()
+            if age_value in ["", "例如: 45"] or self.entry_age.cget("fg") == "gray":
+                missing_fields.append("年龄")
+            else:
+                try:
+                    age = int(age_value)
+                except ValueError:
+                    invalid_fields.append("年龄")
+            
+            # 显示错误信息
+            if missing_fields:
+                messagebox.showerror("缺少数据", f"请填写以下字段：\n{', '.join(missing_fields)}")
+                return
+            
+            if invalid_fields:
+                messagebox.showerror("无效数据", f"以下字段包含无效数值：\n{', '.join(invalid_fields)}\n请输入有效的数字")
+                return
+            
+            # 所有验证通过，继续处理
+            tc = float(tc_value)
+            ldl_c = float(ldl_c_value)
+            hdl_c = float(hdl_c_value)
+            tg = float(tg_value)
+            age = int(age_value)
             gender = self.gender_var.get()
             has_diabetes = self.var_diabetes.get()
             has_ckd = self.var_ckd.get()
@@ -339,6 +428,10 @@ class DoctorGUI:
                         risk_level = "高危 (≥10%)"
                 else:  # risk_factors == 3
                     risk_level = "高危 (≥10%)"
+            
+            # 添加调试信息
+            print(f"风险评估信息: 高血压={has_hypertension}, 风险因素数={risk_factors}, TC={tc}, LDL-C={ldl_c}")
+            print(f"评估结果: 风险等级={risk_level}")
 
             # 设置治疗目标
             if risk_level.startswith("高危"):
@@ -356,7 +449,7 @@ class DoctorGUI:
 
             # 判断是否需要显示余生危险评估
             if risk_level == "中危 (5-9%)" and age < 55:
-                if not hasattr(self, 'var_high_bp'):
+                if not hasattr(self, 'lifetime_risk_frame') or not self.lifetime_risk_frame.winfo_viewable():
                     # 第一次点击，显示余生危险因素选项
                     self._show_lifetime_risk_factors()
                     return
@@ -404,28 +497,55 @@ class DoctorGUI:
                 
             messagebox.showinfo("风险评估结果及治疗目标", result_message)
             
-        except ValueError:
-            messagebox.showerror("输入错误", "请输入有效的数值")
+        except Exception as e:
+            messagebox.showerror("错误", f"发生未知错误: {str(e)}")
 
     def _create_input_field(self, label_text, row):
         tk.Label(self.root, text=label_text).grid(row=row, column=0, sticky="w")
         entry = tk.Entry(self.root)
         entry.grid(row=row, column=1)
         
-        # 从标签文本中提取变量名
-        var_name = label_text.split()[0].lower()
-        if "(" in var_name:
-            var_name = var_name.split("(")[0].strip()
+        # 设置默认提示文本（灰色显示）
+        placeholder = ""
+        if "总胆固醇" in label_text:
+            placeholder = "正常范围: 3.1-5.2"
+            setattr(self, "entry_tc", entry)
+        elif "低密度脂蛋白胆固醇" in label_text or "LDL-C" in label_text:
+            placeholder = "正常范围: 1.8-3.4"
+            setattr(self, "entry_ldl_c", entry)
+        elif "高密度脂蛋白胆固醇" in label_text or "HDL-C" in label_text:
+            placeholder = "正常范围: >1.0"
+            setattr(self, "entry_hdl_c", entry)
+        elif "甘油三酯" in label_text or "TG" in label_text:
+            placeholder = "正常范围: <1.7"
+            setattr(self, "entry_tg", entry)
+        elif "年龄" in label_text:
+            placeholder = "例如: 45"
+            setattr(self, "entry_age", entry)
+        else:
+            # 从标签文本中提取变量名（作为后备方案）
+            var_name = label_text.split()[0].lower()
+            if "(" in var_name:
+                var_name = var_name.split("(")[0].strip()
+            setattr(self, f"entry_{var_name}", entry)
         
-        # 设置变量名，例如 entry_tc, entry_ldl_c 等
-        if var_name == "低密度脂蛋白胆固醇":
-            var_name = "ldl_c"
-        elif var_name == "高密度脂蛋白胆固醇":
-            var_name = "hdl_c"
-        elif var_name == "甘油三酯":
-            var_name = "tg"
-        
-        setattr(self, f"entry_{var_name}", entry)
+        # 添加占位符文本和焦点事件
+        if placeholder:
+            entry.insert(0, placeholder)
+            entry.config(fg='gray')
+            
+            def on_focus_in(event):
+                if entry.get() == placeholder:
+                    entry.delete(0, tk.END)
+                    entry.config(fg='black')
+            
+            def on_focus_out(event):
+                if not entry.get():
+                    entry.insert(0, placeholder)
+                    entry.config(fg='gray')
+            
+            entry.bind('<FocusIn>', on_focus_in)
+            entry.bind('<FocusOut>', on_focus_out)
 
     def _create_checkbox(self, text, row):
         var = tk.BooleanVar()
