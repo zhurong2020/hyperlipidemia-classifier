@@ -27,7 +27,8 @@ log "虚拟环境已激活"
 
 # 安装依赖
 log "开始安装依赖..."
-pip install -r requirements/web.txt
+pip install --upgrade pip
+pip install --force-reinstall -r requirements/web.txt
 log "依赖安装完成"
 
 # 设置生产环境

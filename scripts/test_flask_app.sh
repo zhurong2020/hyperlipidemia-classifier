@@ -13,6 +13,12 @@ log "切换到项目目录"
 source $HOME/venv/bin/activate
 log "虚拟环境已激活"
 
+# 安装依赖
+log "确保依赖正确安装..."
+pip install --upgrade pip
+pip install --force-reinstall -r requirements/web.txt
+log "依赖安装完成"
+
 # 设置环境变量
 export FLASK_APP=wsgi.py
 export FLASK_ENV=development
@@ -42,6 +48,10 @@ python -c "import app; print('成功导入app模块')"
 # 尝试直接导入wsgi模块
 log "尝试导入wsgi模块:"
 python -c "import wsgi; print('成功导入wsgi模块')"
+
+# 检查Flask和Werkzeug版本
+log "检查Flask和Werkzeug版本:"
+python -c "import flask, werkzeug; print(f'Flask版本: {flask.__version__}, Werkzeug版本: {werkzeug.__version__}')"
 
 # 尝试运行Flask应用
 log "尝试运行Flask应用:"
