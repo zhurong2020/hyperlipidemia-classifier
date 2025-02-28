@@ -3,34 +3,48 @@
 ## 项目结构
 ```
 hyperlipidemia-classifier/
-├── .gitignore           # Git ignore file
-├── LICENSE              # MIT License file
-├── README.md            # Project documentation
-├── requirements.txt     # Project dependencies
-├── setup.py             # Package installation configuration
+├── .github/
+│   └── workflows/
+│       └── deploy.yml   # CI/CD配置
+├── app/                 # Web应用模块
+│   ├── __init__.py
+│   ├── routes.py        # 路由配置
+│   └── templates/
+│       └── index.html   # 网页模板
 ├── docs/                # Documentation directory
 │   ├── images/          # Image resources
-│   │   ├── flow_chart_1.jpg
-│   │   ├── flow_chart_2.jpg
-│   │   ├── risk_assessment.jpg
-│   │   └── ui_screenshot.jpg
 │   ├── archive/         # Archived files
 │   │   └── main.py      # Old version code
-│   └── logic/           # Logic documentation
-│       ├── __init__.py  # Package initialization file
-│       └── 一级预防逻辑.txt
-└── src/                 # Source code directory
-    ├── __init__.py      # Package initialization file
-    ├── lipid_risk_assessor.py  # Main program
-    ├── classifier.py    # Classifier module
-    ├── config/          # Configuration files directory
-    │   └── __init__.py  # Package initialization file
-    ├── utils/           # Utility functions directory
-    │   ├── __init__.py  # Package initialization file with utility functions
-    │   └── ocr_to_markdown.py  # OCR script
-    └── tests/           # Tests directory
-        ├── __init__.py  # Package initialization file
-        └── test_classifier.py
+│   ├── logic/           # Logic documentation
+│   └── ocr_output
+├── requirements/        # 依赖管理
+│   ├── base.txt         # 基础依赖
+│   ├── web.txt          # Web服务依赖
+│   └── desktop.txt      # 桌面应用依赖
+├── scripts/             # 部署脚本
+│   └── deploy_hyperlipidemia.sh
+├── src/
+│   ├── config/            
+│   ├── core/            # 核心计算逻辑
+│   │   ├── __init__.py
+│   │   ├── lipid_risk_assessor.py
+│   │   └── risk_calculator.py
+│   ├── desktop/         # 桌面应用
+│   │   └── gui_app.py
+│   ├── tests/           # 测试目录
+│   ├── utils/             
+│   ├── web/             # Web服务适配器
+│   │   ├── assessor.py
+│   │   └── wechat_handler.py
+├── legacy/                   # 历史版本代码存档
+│   ├── main DM.py           # 原桌面端主程序
+│   ├── classifier.py        # 原核心分类逻辑
+│   └── requirements.txt     # 原依赖库列表
+├── .gitignore
+├── LICENSE
+├── README.md
+├── setup.py
+└── VERSION
 ```
 
 ## Technical Framework
@@ -144,11 +158,46 @@ To use the OCR functionality, you need to install Tesseract on your Windows syst
 - Medical Consultant: [chenqizhi]
 
 ## Version History
-- v1.0.0 (2024-01)
-  * Initial release
-  * Basic lipid assessment functionality
-  * Added diabetes management module
-  * Optimized user interface
+
+### v0.2.1 (2024-03) - 业务逻辑优化
+**核心改进**：
+- 业务逻辑文档化
+  - 新增`docs/logic`目录存放业务流程文档
+  - 添加`assessment_flow.md`和`assessment_flow.puml`流程图
+  - 记录一级预防和二级预防的详细评估逻辑
+- 代码修复
+  - 修复GUI界面初始显示问题
+  - 补充遗漏的TG输入字段
+  - 完善风险评估逻辑实现
+  - 修正余生风险评估功能
+- 质量提升
+  - 根据原始代码校对业务流程
+  - 确保新旧版本功能一致性
+
+### v0.2.0 (2024-03) - 架构升级
+**核心改进**：
+- 项目结构重构
+  - 新增`src/core`存放核心算法
+  - 分离桌面和Web实现
+  - 添加`legacy`目录保存历史代码
+- 代码质量提升
+  - 采用面向对象设计
+  - 增加类型提示
+  - 完善异常处理
+- 新功能
+  - 支持Web服务
+  - 添加自动化测试
+  - 实现UI对比工具
+
+### v0.1.2 (2024-02) - 问题修复
+- 修复输入验证漏洞
+- 优化糖尿病评估逻辑
+- 更新依赖版本
+
+### v0.1.0 (2024-01) - 初始版本
+- 实现基础评估功能
+- 开发桌面端界面
+- 制定糖尿病管理标准
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
@@ -156,46 +205,67 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Copyright Information
 © 2024 [znhskzj]. All Rights Reserved.
 
-## 新项目结构
-```
-hyperlipidemia-classifier/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml   # CI/CD配置
-├── app/                 # Web应用模块
-│   ├── __init__.py
-│   ├── routes.py        # 路由配置
-│   └── templates/
-│       └── index.html   # 网页模板
-├── docs/                # Documentation directory
-│   ├── images/          # Image resources
-│   ├── archive/         # Archived files
-│   │   └── main.py      # Old version code
-│   ├── logic/           # Logic documentation
-│   └── ocr_output
-├── requirements/        # 依赖管理
-│   ├── base.txt         # 基础依赖
-│   ├── web.txt          # Web服务依赖
-│   └── desktop.txt      # 桌面应用依赖
-├── scripts/             # 部署脚本
-│   └── deploy_hyperlipidemia.sh
-├── src/
-│   ├── config/            
-│   ├── core/            # 核心计算逻辑
-│   │   ├── __init__.py
-│   │   ├── lipid_risk_assessor.py
-│   │   └── risk_calculator.py
-│   ├── desktop/         # 桌面应用
-│   │   └── gui_app.py
-│   ├── tests/           # 测试目录
-│   ├── utils/             
-│   ├── web/             # Web服务适配器
-│   │   ├── assessor.py
-│   │   └── wechat_handler.py
-├── .gitignore
-├── LICENSE
-├── README.md
-├── setup.py
-└── VERSION
+## 快速开始
 
+### 运行历史版本（仅供参考）
+```bash
+# 进入legacy目录
+cd legacy
+
+# 安装历史版本依赖
+pip install -r requirements.txt
+
+# 运行原桌面程序
+python "main DM.py"
 ```
+
+### 运行新版本桌面程序
+```bash
+# 使用新的运行脚本
+python run_desktop.py
+```
+
+### 业务逻辑文档
+为了更好地理解系统的评估流程，我们提供了详细的业务逻辑文档：
+1. `docs/logic/assessment_flow.md` - 完整的评估流程说明
+2. `docs/logic/assessment_flow.puml` - PlantUML格式的流程图
+3. `docs/logic/一级预防逻辑.txt` - 一级预防详细逻辑说明
+
+这些文档可以帮助开发者和医疗专业人员理解系统的决策过程，确保实现的准确性。
+
+## 版本迁移指南
+
+我们保留了历史版本代码以方便参考：
+1. `legacy/`目录包含重构前的完整代码
+2. 主要改进点：
+   - 模块化核心逻辑到`src/core`
+   - 分离GUI和业务逻辑
+   - 增强可维护性的面向对象设计
+3. 对比测试方法：
+```bash
+# 在新旧版本间进行功能对比
+python tests/ui_diff_check.py old_ui.png new_ui.png
+```
+
+## 依赖管理
+
+历史版本依赖见[legacy/requirements.txt](legacy/requirements.txt)，新版本依赖请参考[requirements/base.txt](requirements/base.txt)。
+
+主要变更：
+- 移除了未使用的scikit-learn依赖
+- 添加了Flask等Web支持
+- 规范了版本约束
+
+### 从v0.1迁移到v0.2
+1. 新老版本并行运行验证：
+```bash
+# 老版本
+python legacy/main\ DM.py
+
+# 新版本
+python run_desktop.py
+```
+2. 主要变更点：
+   - 移除了全局变量
+   - 使用类封装界面逻辑
+   - 分离业务逻辑到独立模块
