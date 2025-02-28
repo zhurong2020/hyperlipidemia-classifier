@@ -1,0 +1,24 @@
+feat: 添加微信公众号集成功能与HTTPS支持
+
+添加了与微信公众号"白衣飘飘chen"的集成功能，实现了以下内容：
+
+代码更新:
+- 创建完整的WeChatHandler类处理微信消息和事件
+- 更新Flask路由以使用新的微信处理器
+- 添加微信集成所需的依赖项(requests, xmltodict)
+- 创建集中式配置文件(src/config/settings.py)管理服务器和微信设置
+- 支持HTTPS和域名(med.zhurong.link)访问
+- 支持微信消息的兼容加密模式
+
+脚本创建:
+- setup_wechat_menu.py: 配置微信公众号自定义菜单
+- setup_wechat_nginx.sh: 配置Nginx反向代理和HTTPS支持
+- deploy_wechat_integration.sh: 部署微信集成应用
+
+文档编写:
+- wechat_integration_guide.md: 详细的集成指南
+- wechat_integration_summary.md: 集成总结文档
+
+此次更新使血脂风险评估系统能够通过微信公众号提供服务，
+用户可以通过关注公众号并点击菜单访问评估功能。
+同时，系统现在支持通过HTTPS安全访问，提高了应用的安全性。 
