@@ -7,11 +7,11 @@ log() {
 }
 
 # 进入项目目录
-cd ~/hyperlipidemia_web
+cd $HOME/hyperlipidemia_web
 log "切换到项目目录"
 
 # 确保日志目录存在
-mkdir -p ~/hyperlipidemia_web/logs
+mkdir -p $HOME/hyperlipidemia_web/logs
 log "确保日志目录存在"
 
 # 检查虚拟环境是否存在，如果不存在则创建
