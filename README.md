@@ -1,105 +1,104 @@
-# 血脂风险评估系统
+# 血脂风险评估系统 (Hyperlipidemia Risk Assessment System)
 
-## 项目结构
+A comprehensive system for assessing hyperlipidemia risk, providing risk stratification and treatment recommendations based on clinical guidelines.
+
+## Project Overview
+
+This system provides both web-based and desktop interfaces for healthcare professionals to assess patients' lipid-related cardiovascular risks. It implements the latest clinical guidelines for hyperlipidemia management, offering personalized risk stratification and treatment goals.
+
+### Key Features
+
+1. **Dual Interface**: Available as both web application and desktop software
+2. **WeChat Integration**: Accessible through WeChat Official Account
+3. **ASCVD Risk Stratification**: Comprehensive assessment of atherosclerotic cardiovascular disease risk
+4. **Personalized Treatment Goals**: Customized lipid targets based on risk level
+5. **Special Assessment Standards**: Specific criteria for diabetic patients
+6. **Lifetime Risk Assessment**: Extended risk evaluation for eligible populations
+7. **Secure HTTPS Access**: Encrypted communication via custom domain
+
+## Project Structure
 ```
 hyperlipidemia-classifier/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml   # CI/CD配置
-├── app/                 # Web应用模块
-│   ├── __init__.py
-│   ├── routes.py        # 路由配置
+│       └── deploy.yml           # CI/CD configuration
+├── app/                         # Web application module
+│   ├── __init__.py              # Flask app initialization
+│   ├── routes.py                # Web routes and endpoints
+│   ├── static/                  # Static assets (CSS, JS, images)
 │   └── templates/
-│       └── index.html   # 网页模板
-├── docs/                # Documentation directory
-│   ├── images/          # Image resources
-│   ├── archive/         # Archived files
-│   │   └── main.py      # Old version code
-│   ├── logic/           # Logic documentation
-│   └── ocr_output
-├── requirements/        # 依赖管理
-│   ├── base.txt         # 基础依赖
-│   ├── web.txt          # Web服务依赖
-│   └── desktop.txt      # 桌面应用依赖
-├── scripts/             # 部署脚本
-│   ├── deploy_hyperlipidemia.sh    # 主部署脚本
-│   ├── deploy_with_systemd.sh      # 使用systemd部署的脚本
-│   ├── test_flask_app.sh           # Flask应用测试脚本
-│   └── hyperlipidemia.service      # systemd服务配置文件
+│       └── index.html           # Main web interface template
+├── docs/                        # Documentation directory
+│   ├── images/                  # Image resources
+│   ├── archive/                 # Archived files
+│   ├── logic/                   # Logic documentation
+│   │   ├── assessment_flow.md   # Assessment process documentation
+│   │   └── assessment_flow.puml # Assessment process diagram
+│   └── ocr_output               # OCR test outputs
+├── legacy/                      # Historical code archive
+│   ├── main DM.py               # Original desktop application
+│   ├── classifier.py            # Original classification logic
+│   └── requirements.txt         # Original dependencies
+├── requirements/                # Dependency management
+│   ├── base.txt                 # Core dependencies
+│   ├── web.txt                  # Web service dependencies
+│   └── desktop.txt              # Desktop application dependencies
+├── scripts/                     # Deployment and utility scripts
+│   ├── deploy_hyperlipidemia.sh # Main deployment script
+│   ├── deploy_with_systemd.sh   # Systemd deployment script
+│   ├── deploy_wechat_integration.sh # WeChat integration deployment
+│   ├── get_wechat_token.py      # Script to obtain WeChat access token
+│   ├── setup_wechat_menu.py     # WeChat menu configuration script
+│   ├── setup_wechat_nginx.sh    # Nginx configuration for WeChat
+│   ├── test_flask_app.sh        # Flask application test script
+│   └── hyperlipidemia.service   # Systemd service configuration
 ├── src/
-│   ├── config/            
-│   ├── core/            # 核心计算逻辑
-│   │   ├── __init__.py
-│   │   ├── lipid_risk_assessor.py
-│   │   └── risk_calculator.py
-│   ├── desktop/         # 桌面应用
-│   │   └── gui_app.py
-│   ├── tests/           # 测试目录
-│   ├── utils/             
-│   ├── web/             # Web服务适配器
-│   │   ├── assessor.py
-│   │   └── wechat_handler.py
-├── legacy/                   # 历史版本代码存档
-│   ├── main DM.py           # 原桌面端主程序
-│   ├── classifier.py        # 原核心分类逻辑
-│   └── requirements.txt     # 原依赖库列表
+│   ├── config/                  # Centralized configuration
+│   │   └── settings.py          # Application settings (server, WeChat)
+│   ├── core/                    # Core calculation logic
+│   │   ├── lipid_risk_assessor.py # Main risk assessment logic
+│   │   └── risk_calculator.py   # Risk calculation algorithms
+│   ├── desktop/                 # Desktop application
+│   │   └── gui_app.py           # Tkinter GUI implementation
+│   ├── tests/                   # Test directory
+│   ├── utils/                   # Utility functions
+│   ├── web/                     # Web service adapters
+│   │   ├── assessor.py          # Web assessment adapter
+│   │   └── wechat_handler.py    # WeChat message handler
+│   └── __init__.py
 ├── .gitignore
-├── LICENSE
+├── LICENSE                      # MIT License
 ├── README.md
-├── setup.py
-├── wsgi.py                   # WSGI应用入口点
-└── VERSION
+├── run_desktop.py               # Desktop application entry point
+├── setup.py                     # Package setup script
+├── wsgi.py                      # WSGI application entry point
+└── VERSION                      # Current version (0.2.4)
 ```
 
 ## Technical Framework
-- Programming Language: Python 3.x
-- GUI Framework: Tkinter
-- Dependency Management: pip
 
-## Main Features
-1. ASCVD risk stratification assessment
-2. Lipid treatment goal setting
-3. Special assessment standards for diabetic patients
-4. Lifetime risk factor assessment (for specific populations)
-
-## Tesseract Installation on Windows
-
-To use the OCR functionality, you need to install Tesseract on your Windows system:
-
-1. **Download and Install Tesseract**:
-   - Download the Tesseract installer from [Tesseract at UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki).
-   - Run the installer and follow the instructions to complete the installation.
-
-2. **Add Tesseract to PATH**:
-   - Find the installation path of Tesseract (e.g., `C:\Program Files\Tesseract-OCR`).
-   - Open the Start Menu and search for "Environment Variables".
-   - Click "Edit the system environment variables".
-   - In the System Properties window, click "Environment Variables".
-   - Under "System variables", find and select the "Path" variable, then click "Edit".
-   - Click "New" and add the path to the Tesseract installation directory.
-   - Click "OK" to close all dialog boxes.
-
-3. **Verify Installation**:
-   - Open a command prompt and type:
-     ```bash
-     tesseract --version
-     ```
-   - You should see the version information for Tesseract.
+- **Backend**: Python 3.x
+- **Web Framework**: Flask
+- **Desktop GUI**: Tkinter
+- **Deployment**: Gunicorn, Nginx, Systemd
+- **HTTPS**: Let's Encrypt SSL
+- **WeChat Integration**: WeChat Official Account API
+- **Dependency Management**: pip
 
 ## Assessment Process
 
 ### Primary Prevention (No ASCVD)
-1. Basic Information Entry:
+1. **Basic Information Entry**:
    - Lipid indicators (TC, LDL-C, HDL-C, TG)
    - Age and gender
-   - Risk factors (diabetes, CKD, smoking, etc.)
+   - Risk factors (diabetes, CKD, smoking, hypertension)
 
-2. Risk Stratification Standards:
-   - High Risk: LDL-C ≥ 4.9 mmol/L or TC ≥ 7.2 mmol/L; diabetes and age ≥ 40 years; CKD 3-4 stage
-   - Moderate Risk: Evaluated based on the number of risk factors and lipid levels
-   - Low Risk: Other situations
+2. **Risk Stratification Standards**:
+   - **High Risk**: LDL-C ≥ 4.9 mmol/L or TC ≥ 7.2 mmol/L; diabetes and age ≥ 40 years; CKD 3-4 stage
+   - **Moderate Risk**: Evaluated based on the number of risk factors and lipid levels
+   - **Low Risk**: Other situations
 
-3. Lifetime Risk Assessment (for moderate risk and age <55)
+3. **Lifetime Risk Assessment** (for moderate risk and age <55)
 
 ### Secondary Prevention (With ASCVD)
 1. Assessment of severe ASCVD events
@@ -109,235 +108,182 @@ To use the OCR functionality, you need to install Tesseract on your Windows syst
 ## Treatment Goals
 
 ### Non-Diabetic Patients
-- Extremely High Risk: LDL-C<1.4 mmol/L, and >50% reduction from baseline
-- Very High Risk: LDL-C<1.8 mmol/L, and >50% reduction from baseline
-- High Risk: LDL-C<2.6 mmol/L
-- Moderate Risk: LDL-C<2.6 mmol/L
-- Low Risk: LDL-C<3.4 mmol/L
+- **Extremely High Risk**: LDL-C<1.4 mmol/L, and >50% reduction from baseline
+- **Very High Risk**: LDL-C<1.8 mmol/L, and >50% reduction from baseline
+- **High Risk**: LDL-C<2.6 mmol/L
+- **Moderate Risk**: LDL-C<2.6 mmol/L
+- **Low Risk**: LDL-C<3.4 mmol/L
 
 ### Diabetic Patients
-1. With ASCVD:
+1. **With ASCVD**:
    - LDL-C<1.4 mmol/L
    - Non-HDL-C<2.2 mmol/L
 
-2. High ASCVD Risk:
+2. **High ASCVD Risk**:
    - LDL-C<1.8 mmol/L
    - Non-HDL-C<2.6 mmol/L
 
-3. Moderate to Low ASCVD Risk:
+3. **Moderate to Low ASCVD Risk**:
    - LDL-C<2.6 mmol/L
    - Non-HDL-C<3.4 mmol/L
 
-## Usage Instructions
-1. Run the program and first select whether the patient has ASCVD
-2. Enter the relevant information as prompted
-3. Click the assessment button to get risk stratification and treatment goals
-4. If eligible for lifetime risk assessment, additional assessment options will appear
+## Installation and Usage
 
-## Notes
-- All numerical inputs must use Arabic numerals
-- Lipid indicators are in mmol/L
-- Age must be an integer
-- Ensure all necessary information is filled in before assessment
-
-## Installation Instructions
-1. Clone the project locally
+### Web Application
+1. Clone the repository:
    ```bash
    git clone https://github.com/zhurong2020/hyperlipidemia-classifier
    ```
 
-2. Install dependencies
+2. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements/web.txt
    ```
 
-3. Run the program
+3. Run the development server:
    ```bash
-   python src/lipid_risk_assessor.py
+   python wsgi.py
    ```
+
+4. Access the application at:
+   - Local development: http://localhost:5000
+   - Production: https://med.zhurong.link
+
+### Desktop Application
+1. Install dependencies:
+   ```bash
+   pip install -r requirements/desktop.txt
+   ```
+
+2. Run the desktop application:
+   ```bash
+   python run_desktop.py
+   ```
+
+### Deployment
+1. Deploy to production server:
+   ```bash
+   cd scripts
+   ./deploy_hyperlipidemia.sh
+   ```
+
+2. Deploy with systemd:
+   ```bash
+   cd scripts
+   ./deploy_with_systemd.sh
+   ```
+
+3. Configure WeChat integration:
+   ```bash
+   cd scripts
+   ./deploy_wechat_integration.sh
+   ```
+
+## WeChat Integration
+
+The system can be accessed through a WeChat Official Account:
+
+1. **Access Method**: Scan QR code or search for the Official Account "白衣飘飘chen"
+2. **Usage**: Click on the "血脂评估" menu item to access the web application
+3. **Configuration**:
+   - Server URL: https://med.zhurong.link/wechat
+   - Token: Configured in settings.py
+   - EncodingAESKey: Configured in settings.py
+   - Encryption Mode: Compatible mode
+
+## Version History
+
+### v0.2.4 (2024-02) - HTTPS and Centralized Configuration
+**Core Improvements**:
+- **Centralized Configuration**
+  - Created new settings file at `src/config/settings.py`
+  - Consolidated server and WeChat configuration
+  - Updated all scripts to use the centralized settings
+- **HTTPS Support**
+  - Added support for secure HTTPS connections
+  - Configured custom domain (med.zhurong.link)
+  - Implemented SSL certificate management
+- **WeChat Integration**
+  - Updated WeChat configuration for compatibility mode
+  - Improved menu integration with direct link to web application
+  - Fixed string escaping issues in WeChat handler
+- **UI Improvements**
+  - Simplified user interface by removing redundant buttons
+  - Streamlined risk assessment workflow
+
+### v0.2.3 (2024-02) - WeChat Integration
+**Core Improvements**:
+- **WeChat Official Account Integration**
+  - Added WeChat message handling
+  - Implemented custom menu configuration
+  - Created deployment scripts for WeChat setup
+- **Server Configuration**
+  - Added Nginx configuration for WeChat callbacks
+  - Implemented token verification
+  - Set up message encryption/decryption
+
+### v0.2.2 (2024-02) - Deployment Optimization
+**Core Improvements**:
+- **Deployment Script Optimization**
+  - Replaced `~` with `$HOME` to avoid path resolution issues
+  - Enhanced error handling and logging
+  - Added `test_flask_app.sh` for Flask application diagnostics
+- **Dependency Management Improvements**
+  - Fixed Flask and Werkzeug version compatibility issues
+  - Added `--force-reinstall` option for dependency installation
+  - Added version checking functionality in test scripts
+- **Bug Fixes**
+  - Resolved Werkzeug `url_quote` import error
+  - Fixed directory creation issues in deployment scripts
+  - Improved systemd service configuration
+
+### v0.2.1 (2024-02) - Business Logic Optimization
+**Core Improvements**:
+- **Business Logic Documentation**
+  - Added `docs/logic` directory for business process documentation
+  - Created assessment flow diagrams and documentation
+  - Documented primary and secondary prevention assessment logic
+- **Code Fixes**
+  - Fixed GUI initial display issues
+  - Added missing TG input field
+  - Improved risk assessment logic implementation
+  - Fixed lifetime risk assessment functionality
+- **Quality Improvements**
+  - Verified business processes against original code
+  - Ensured consistency between old and new versions
+
+### v0.2.0 (2024-01) - Architecture Upgrade
+**Core Improvements**:
+- **Project Structure Refactoring**
+  - Added `src/core` for core algorithms
+  - Separated desktop and web implementations
+  - Created `legacy` directory for historical code
+- **Code Quality Improvements**
+  - Implemented object-oriented design
+  - Added type hints
+  - Improved exception handling
+- **New Features**
+  - Added web service support
+  - Implemented automated testing
+  - Created UI comparison tools
+
+### v0.1.2 (2024-01) - Bug Fixes
+- Fixed input validation vulnerabilities
+- Optimized diabetes assessment logic
+- Updated dependency versions
+
+### v0.1.0 (2023-12) - Initial Version
+- Implemented basic assessment functionality
+- Developed desktop interface
+- Established diabetes management standards
 
 ## Development Team
 - Project Lead: [chenqizhi]
 - Developer: [zhurong2020]
 - Medical Consultant: [chenqizhi]
 
-## Version History
-
-### v0.2.2 (2024-03) - 部署优化与依赖修复
-**核心改进**：
-- 部署脚本优化
-  - 将所有脚本中的 `~` 替换为 `$HOME` 以避免路径解析问题
-  - 增强部署脚本的错误处理和日志记录
-  - 添加 `test_flask_app.sh` 用于诊断Flask应用问题
-- 依赖管理改进
-  - 固定Flask版本为2.0.1和Werkzeug版本为2.0.1以解决兼容性问题
-  - 添加 `--force-reinstall` 选项确保依赖正确安装
-  - 在测试脚本中添加版本检查功能
-- 错误修复
-  - 解决了由于Werkzeug版本不兼容导致的 `url_quote` 导入错误
-  - 修复了部署过程中可能创建错误 `~` 目录的问题
-  - 改进了systemd服务配置
-
-### v0.2.1 (2024-03) - 业务逻辑优化
-**核心改进**：
-- 业务逻辑文档化
-  - 新增`docs/logic`目录存放业务流程文档
-  - 添加`assessment_flow.md`和`assessment_flow.puml`流程图
-  - 记录一级预防和二级预防的详细评估逻辑
-- 代码修复
-  - 修复GUI界面初始显示问题
-  - 补充遗漏的TG输入字段
-  - 完善风险评估逻辑实现
-  - 修正余生风险评估功能
-- 质量提升
-  - 根据原始代码校对业务流程
-  - 确保新旧版本功能一致性
-
-### v0.2.0 (2024-03) - 架构升级
-**核心改进**：
-- 项目结构重构
-  - 新增`src/core`存放核心算法
-  - 分离桌面和Web实现
-  - 添加`legacy`目录保存历史代码
-- 代码质量提升
-  - 采用面向对象设计
-  - 增加类型提示
-  - 完善异常处理
-- 新功能
-  - 支持Web服务
-  - 添加自动化测试
-  - 实现UI对比工具
-
-### v0.1.2 (2024-02) - 问题修复
-- 修复输入验证漏洞
-- 优化糖尿病评估逻辑
-- 更新依赖版本
-
-### v0.1.0 (2024-01) - 初始版本
-- 实现基础评估功能
-- 开发桌面端界面
-- 制定糖尿病管理标准
-
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Copyright Information
 © 2024 [znhskzj]. All Rights Reserved.
-
-## 快速开始
-
-### 运行历史版本（仅供参考）
-```bash
-# 进入legacy目录
-cd legacy
-
-# 安装历史版本依赖
-pip install -r requirements.txt
-
-# 运行原桌面程序
-python "main DM.py"
-```
-
-### 运行新版本桌面程序
-```bash
-# 使用新的运行脚本
-python run_desktop.py
-```
-
-### 业务逻辑文档
-为了更好地理解系统的评估流程，我们提供了详细的业务逻辑文档：
-1. `docs/logic/assessment_flow.md` - 完整的评估流程说明
-2. `docs/logic/assessment_flow.puml` - PlantUML格式的流程图
-3. `docs/logic/一级预防逻辑.txt` - 一级预防详细逻辑说明
-
-这些文档可以帮助开发者和医疗专业人员理解系统的决策过程，确保实现的准确性。
-
-## Web部署指南
-
-从v0.2.0开始，系统支持Web部署，可以作为网页应用提供服务。
-
-### 部署到VPS服务器
-
-1. **准备工作**
-   - 确保服务器已安装Python 3.8+
-   - 克隆代码库到服务器
-   ```bash
-   git clone https://github.com/zhurong2020/hyperlipidemia-classifier.git hyperlipidemia_web
-   cd hyperlipidemia_web
-   ```
-
-2. **使用部署脚本**
-   
-   我们提供了两种部署方式：
-   
-   a. 使用Gunicorn直接部署：
-   ```bash
-   bash scripts/deploy_hyperlipidemia.sh
-   ```
-   
-   b. 使用Systemd服务部署（推荐用于生产环境）：
-   ```bash
-   bash scripts/deploy_with_systemd.sh
-   ```
-
-3. **测试部署**
-   
-   如果遇到部署问题，可以使用测试脚本诊断：
-   ```bash
-   bash scripts/test_flask_app.sh
-   ```
-   
-   此脚本会检查环境配置、依赖版本和应用响应情况。
-
-4. **访问Web应用**
-   
-   部署成功后，可以通过以下地址访问应用：
-   ```
-   http://服务器IP:5000
-   ```
-
-### 依赖版本说明
-
-Web部署使用以下关键依赖：
-- Flask 2.0.1
-- Werkzeug 2.0.1
-- Gunicorn 20.1.0
-
-这些版本经过兼容性测试，确保能够正常工作。如需更新版本，请先在测试环境验证。
-
-## 版本迁移指南
-
-我们保留了历史版本代码以方便参考：
-1. `legacy/`目录包含重构前的完整代码
-2. 主要改进点：
-   - 模块化核心逻辑到`src/core`
-   - 分离GUI和业务逻辑
-   - 增强可维护性的面向对象设计
-3. 对比测试方法：
-```bash
-# 在新旧版本间进行功能对比
-python tests/ui_diff_check.py old_ui.png new_ui.png
-```
-
-## 依赖管理
-
-历史版本依赖见[legacy/requirements.txt](legacy/requirements.txt)，新版本依赖请参考[requirements/base.txt](requirements/base.txt)。
-
-主要变更：
-- 移除了未使用的scikit-learn依赖
-- 添加了Flask等Web支持
-- 规范了版本约束
-
-### 从v0.1迁移到v0.2
-1. 新老版本并行运行验证：
-```bash
-# 老版本
-python legacy/main\ DM.py
-
-# 新版本
-python run_desktop.py
-```
-2. 主要变更点：
-   - 移除了全局变量
-   - 使用类封装界面逻辑
-   - 分离业务逻辑到独立模块
