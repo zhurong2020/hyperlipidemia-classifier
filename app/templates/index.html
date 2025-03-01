@@ -217,7 +217,6 @@
             
             <!-- 评估按钮 -->
             <div class="mt-4">
-                <button type="button" id="check-lifetime-risk" class="btn btn-info me-2">检查余生风险</button>
                 <button type="submit" class="btn btn-primary">评估风险</button>
             </div>
         </form>
@@ -259,11 +258,6 @@
                 radio.addEventListener('change', showPreventionForm);
             });
             
-            // 检查余生风险按钮
-            document.getElementById('check-lifetime-risk').addEventListener('click', function() {
-                checkLifetimeRisk();
-            });
-            
             // 输入框焦点事件
             const inputFields = document.querySelectorAll('input[type="text"]');
             inputFields.forEach(input => {
@@ -296,34 +290,6 @@
                 primaryForm.style.display = 'block';
                 secondaryForm.style.display = 'none';
             }
-        }
-        
-        function checkLifetimeRisk() {
-            // 收集表单数据
-            const form = document.getElementById('assessment-form');
-            const formData = new FormData(form);
-            
-            // 发送AJAX请求检查是否需要显示余生风险因素
-            fetch('/check_lifetime_risk', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                const lifetimeRiskSection = document.getElementById('lifetime-risk-factors');
-                if (data.show_lifetime_risk) {
-                    lifetimeRiskSection.style.display = 'block';
-                } else {
-                    lifetimeRiskSection.style.display = 'none';
-                    // 如果不需要显示余生风险，直接提交表单
-                    form.submit();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // 出错时也提交表单
-                form.submit();
-            });
         }
     </script>
 </body>
